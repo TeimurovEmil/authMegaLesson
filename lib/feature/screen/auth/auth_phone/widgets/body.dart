@@ -27,9 +27,9 @@ class _Body extends StatelessWidget {
           maxLength: 10,
           onChange: (value) {
             if (value.length == 10) {
-              providerRead.setIsFullFilled();
+              providerRead.setPhoneFilled();
             } else {
-              providerRead.setNotFullFilled();
+              providerRead.setNotPhoneFilled();
             }
           },
         ),

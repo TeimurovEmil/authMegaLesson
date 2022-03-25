@@ -3,17 +3,15 @@ part of '../sms_screen.dart';
 class _ButtonWidget extends StatelessWidget {
   const _ButtonWidget({
     Key? key,
-    required this.token,
   }) : super(key: key);
-
-  final String token;
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<ProviderSmsAuth>();
+    final vm = context.watch<ProviderAuth>();
     return BlocProvider.value(
       value: AuthBloc(
-        repo: RepositoryProvider.of<AuthRepoImpl>(context),
+        repo: RepositoryProvider.of<AuthRepo>(context),
+        storage: RepositoryProvider.of<RepoSharedPrefs>(context),
       ),
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -21,7 +19,7 @@ class _ButtonWidget extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const MyHomePage(title: ''),
+                builder: (context) => MyHomePage(),
               ),
             );
           }
@@ -39,18 +37,23 @@ class _ButtonWidget extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                if (state is! AuthLoading && vm.isFullFilled.value) {
+                if (state is! AuthLoading && vm.isSmsFilled.value) {
+                  print('TOKEEEEEN ${context.read<ProviderAuth>().token}');
                   BlocProvider.of<AuthBloc>(context).add(
                     AuthSendSmsEvent(
-                      token: token,
-                      sms: vm.smsController.text,
-                    ),
+                        token: context.read<ProviderAuth>().token,
+                        sms: vm.smsController.text,
+                        phoneNumber: context
+                            .read<ProviderAuth>()
+                            .phoneController
+                            .text
+                            .trim()),
                   );
                 }
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
-                  vm.isFullFilled.value
+                  vm.isSmsFilled.value
                       ? Colors.blue
                       : Colors.blue.withOpacity(0.5),
                 ),

@@ -3,9 +3,8 @@ part of '../sms_screen.dart';
 class _Body extends StatelessWidget {
   const _Body({
     Key? key,
-    required this.token,
   }) : super(key: key);
-  final String token;
+
   @override
   Widget build(BuildContext context) {
     // final vm = context.watch<ProviderAuth>();
@@ -25,19 +24,19 @@ class _Body extends StatelessWidget {
         ),
         const SizedBox(height: 50),
         DefaultTextField(
-          controller: context.watch<ProviderSmsAuth>().smsController,
+          controller: context.watch<ProviderAuth>().smsController,
           title: 'Введите смс-код',
           maxLength: 4,
           onChange: (value) {
             if (value.length == 4) {
-              context.read<ProviderSmsAuth>().setIsFullFilled();
+              context.read<ProviderAuth>().setSmsFilled();
             } else {
-              context.read<ProviderSmsAuth>().setNotFullFilled();
+              context.read<ProviderAuth>().setSmsNotFilled();
             }
           },
         ),
         const SizedBox(height: 24),
-        _ButtonWidget(token: token),
+        const _ButtonWidget(),
       ],
     );
   }

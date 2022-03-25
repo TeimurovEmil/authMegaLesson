@@ -8,15 +8,17 @@ class _ButtonWidget extends StatelessWidget {
     final vm = context.watch<ProviderAuth>();
     return BlocProvider(
       create: (context) => AuthBloc(
-        repo: RepositoryProvider.of<AuthRepoImpl>(context),
+        repo: RepositoryProvider.of<AuthRepo>(context),
+        storage: RepositoryProvider.of<RepoSharedPrefs>(context),
       ),
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
+            context.read<ProviderAuth>().token = state.token;
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => SmsScreen(token: state.token),
+                builder: (context) => const SmsScreen(),
               ),
             );
           }
@@ -34,7 +36,7 @@ class _ButtonWidget extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                if (state is! AuthLoading && vm.isFullFilled.value) {
+                if (state is! AuthLoading && vm.isPhoneFilled.value) {
                   BlocProvider.of<AuthBloc>(context).add(
                     AuthSendNumberEvent(
                       phoneNumber: vm.phoneController.text,
@@ -44,7 +46,7 @@ class _ButtonWidget extends StatelessWidget {
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
-                  vm.isFullFilled.value
+                  vm.isPhoneFilled.value
                       ? Colors.blue
                       : Colors.blue.withOpacity(0.5),
                 ),

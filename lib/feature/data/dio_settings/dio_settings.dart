@@ -1,3 +1,4 @@
+import 'package:auth_mega_lesson/feature/data/shared_prefs.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -8,7 +9,7 @@ class DioSettings {
 
   Dio dio = Dio(
     BaseOptions(
-      baseUrl: 'https://app1.megacom.kg:9090/kp-auth/',
+      // baseUrl: 'https://app1.megacom.kg:9090/kp-auth/',
       contentType: 'application/json',
       headers: {'Accept': 'application/json'},
       connectTimeout: 20000,

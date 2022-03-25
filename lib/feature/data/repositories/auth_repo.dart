@@ -2,8 +2,8 @@ import 'package:auth_mega_lesson/feature/data/model/auth_model.dart';
 import 'package:dio/dio.dart';
 import 'dart:convert';
 
-class AuthRepoImpl {
-  AuthRepoImpl({required this.dio});
+class AuthRepo {
+  AuthRepo({required this.dio});
 
   late final Dio dio;
   String basicAuth = 'Basic ' + base64Encode(utf8.encode('testEmil:123456'));
